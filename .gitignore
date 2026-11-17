@@ -1,0 +1,18 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+api/config.php
+api/config.local.php
+*.sql
+*.sqlite
+*.sqlite3
+*.log
+.superpowers/
+coverage/
+.vite/
+
+# Server-only migration helpers and live data
+/_*
+public/data/db.json

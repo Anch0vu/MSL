@@ -1,0 +1,66 @@
+/*
+  ТЕМА САЙТА. Все цвета и шрифты — здесь.
+  Палитра снята со скриншота miit.ru: синяя навигация #2946a0, фирменный синий #0054b8,
+  плитки сервисов #f4f9fc с рамкой #b6cbf4. Уточните по брендбуку РУТ (МИИТ), если он есть.
+*/
+:root {
+  --brand: #0054b8;        /* фирменный синий (плашки, кнопки, победители) */
+  --brand-nav: #2946a0;    /* синяя полоса навигации */
+  --brand-deep: #1c3a8f;   /* тёмный синий (плашка «Регистрация», подвал) */
+  --brand-soft: #e8f0fc;   /* подсветка строк, выделенные карточки */
+  --icon: #5b8ad9;         /* контурные иконки плиток */
+
+  --bg: #ffffff;
+  --bg-2: #f5f7fa;
+  --panel: #ffffff;
+  --tile: #f4f9fc;
+  --tile-line: #b6cbf4;
+  --line: #e1e7f0;
+  --text: #1b2333;
+  --text-2: #3d4659;
+  --muted: #6f788b;
+
+  --win: var(--brand);
+  --live: #e0352b;
+  --ok: #1f9d55;
+  --warn: #e08a00;
+
+  --radius: 4px;
+  --radius-lg: 14px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Montserrat', 'Inter', system-ui, sans-serif;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --brand: #3b82f6;
+  --brand-nav: #172a63;
+  --brand-deep: #0f1f4f;
+  --brand-soft: #172545;
+  --icon: #7ea3e8;
+
+  --bg: #0e1320;
+  --bg-2: #0a0e18;
+  --panel: #151c2d;
+  --tile: #18213a;
+  --tile-line: #2b3b63;
+  --line: #243049;
+  --text: #e7ecf6;
+  --text-2: #b8c2d8;
+  --muted: #8793ab;
+
+  --live: #ff5a4f;
+  --ok: #3ecf80;
+  --warn: #f0a63a;
+}
+html[data-theme='dark'] input,
+html[data-theme='dark'] select,
+html[data-theme='dark'] textarea { border-color: #2f3d5e; color: var(--text); }
+html[data-theme='dark'] .preview-bar { background: #3a2f10; color: #f4d98a; }
+html[data-theme='dark'] .badge-live { background: #3a1a1a; }
+html[data-theme='dark'] .badge-upcoming { background: #3a2c12; }
+html[data-theme='dark'] .warn-text { background: #3a2c12; border-color: #5c4619; color: #f0c26a; }
+html[data-theme='dark'] .brand-text b { color: var(--text); }
+html[data-theme='dark'] .tabs a.active,
+html[data-theme='dark'] .btn-white { color: var(--brand); }
+html[data-theme='dark'] img.logo-img { background: transparent; }

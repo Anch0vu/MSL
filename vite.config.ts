@@ -1,0 +1,5 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// base './' — сайт работает из любой подпапки (GitHub Pages, Netlify, Cloudflare Pages)
+export default defineConfig({ plugins: [react()], base: './' })

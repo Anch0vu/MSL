@@ -1,0 +1,81 @@
+/* Стиль Uniswap Cup: белый холст, чёрный и один розовый акцент, моно-цифры, нулевой радиус, без теней и градиентов. */
+.uc {
+  --pink: #f50db4;
+  --blush: #fef4ff;
+  --ink: #000;
+  --ink-2: #222;
+  --wire: #dcdcdc;
+  --mono: 'JetBrains Mono', ui-monospace, 'IBM Plex Mono', 'SF Mono', monospace;
+  --sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+.uc-bracket-wrap { overflow-x: auto; border: 1px solid #f2f2f2; padding: 12px 20px 28px; }
+
+.uc-bracket { display: flex; align-items: stretch; justify-content: center; gap: 28px; min-width: max-content; min-height: max(600px, calc(var(--n) * 96px + 40px)); }
+.uc-col { display: flex; flex-direction: column; width: 168px; }
+.uc-stage { align-self: flex-start; padding: 3px 8px; margin-bottom: 8px; background: var(--pink); color: #fff; font: 500 12px/1.33 var(--mono); }
+.uc-col.r .uc-stage { align-self: flex-end; }
+.uc-cells { display: flex; flex-direction: column; flex: 1; }
+.uc-cell { position: relative; flex: 1; display: flex; align-items: center; padding: 6px 0; --w: var(--wire); }
+.uc-cell.decided { --w: var(--pink); }
+
+/* соединители: прямые углы, у победителя розовые */
+.uc-col.l .uc-cell::after, .uc-col.r .uc-cell::after { content: ''; position: absolute; width: 28px; }
+.uc-col.l .uc-cell::after { right: -28px; }
+.uc-col.r .uc-cell::after { left: -28px; }
+.uc-col.straight .uc-cell::after { top: 50%; border-top: 1px solid var(--w); }
+.uc-col.halving.l .uc-cell::after { border-right: 1px solid var(--w); }
+.uc-col.halving.r .uc-cell::after { border-left: 1px solid var(--w); }
+.uc-col.halving .uc-cell:nth-child(odd)::after { top: 50%; bottom: 0; border-top: 1px solid var(--w); }
+.uc-col.halving .uc-cell:nth-child(even)::after { top: 0; bottom: 50%; border-bottom: 1px solid var(--w); }
+.uc-col.l + .uc-col.l .uc-cell::before, .uc-col.r:not(:last-child) .uc-cell::before { content: ''; position: absolute; top: 50%; width: 28px; border-top: 1px solid var(--wire); }
+.uc-col.l + .uc-col.l .uc-cell::before { left: -28px; }
+.uc-col.r:not(:last-child) .uc-cell::before { right: -28px; }
+
+/* матч */
+.uc-m { position: relative; width: 100%; display: grid; gap: 4px; padding: 6px; background: #fff; border: 1px solid var(--w, var(--wire)); }
+.uc-m.click { cursor: pointer; }
+.uc-m.bye { opacity: 0.4; }
+.uc-m.live { outline: 1px solid var(--pink); outline-offset: 3px; }
+.uc-no { position: absolute; top: -9px; left: 0; padding: 0 4px; background: #000; color: #fff; font: 500 10px/14px var(--mono); z-index: 1; }
+.uc-col.r .uc-no { left: auto; right: 0; }
+.uc-live { position: absolute; bottom: -10px; right: 0; padding: 0 4px; background: var(--pink); color: #fff; font: 700 10px/14px var(--mono); }
+.uc-row { display: flex; align-items: center; gap: 6px; }
+.uc-col.r .uc-row { flex-direction: row-reverse; }
+.uc-ico { display: inline-grid; place-items: center; flex-shrink: 0; overflow: hidden; background: #000; color: #fff; font: 700 11px/1 var(--mono); }
+.uc-ico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.uc-tag { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 13px/1.2 var(--mono); letter-spacing: -0.02em; }
+.uc-col.r .uc-tag { text-align: right; }
+.uc-tag.tbd { color: #9a9a9a; font-weight: 500; }
+.uc-sc { display: inline-grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; background: #fff; color: #000; font: 700 15px/1 var(--mono); }
+.uc-row.win .uc-sc { background: var(--pink); color: #fff; }
+.uc-row.lose { opacity: 0.55; }
+
+/* центр: финал */
+.uc-center { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 560px; }
+.uc-center::before { content: ''; position: absolute; left: -28px; right: -28px; top: calc(50% + 14px); border-top: 1px solid var(--wire); }
+.uc-road { position: absolute; top: 0; font: 500 22px/1.2 var(--sans); }
+.uc-ring { position: absolute; top: 50%; left: 50%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border: 1px solid #f2f2f2; border-radius: 50%; }
+.uc-final { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 22px; background: #fff; padding: 0 8px; }
+.uc-fin { position: relative; display: grid; justify-items: center; gap: 6px; width: 150px; }
+.uc-fin b { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 22px/1.2 var(--sans); }
+.uc-fin .uc-ico { font-size: 34px; }
+.uc-winner { position: absolute; top: -26px; left: 0; padding: 2px 8px; background: var(--pink); color: #fff; font: 500 12px/1.33 var(--mono); }
+.uc-fin.win .uc-ico { outline: 4px solid var(--pink); outline-offset: 0; }
+.uc-fsc { display: inline-grid; place-items: center; width: 44px; height: 44px; background: #fff; color: #000; font: 700 30px/1 var(--mono); }
+.uc-fin.win .uc-fsc { background: var(--pink); color: #fff; }
+.uc-vs { display: grid; justify-items: center; align-self: center; gap: 2px; }
+.uc-ftag { padding: 2px 8px; background: var(--pink); color: #fff; font: 700 30px/1.1 var(--mono); letter-spacing: -0.02em; }
+.uc-vs-t { color: var(--pink); font: 700 56px/1 var(--mono); letter-spacing: -0.02em; }
+.uc-bo { font: 500 12px/1.33 var(--mono); }
+.uc-date { position: absolute; top: calc(50% + 156px); background: #fff; padding: 0 6px; font: 500 12px/1.33 var(--mono); }
+.uc-dd { background: #000; color: #fff; padding: 0 4px; }
+.uc-date u { text-decoration-color: var(--pink); }
+.uc-third { position: absolute; bottom: 0; display: grid; justify-items: center; width: 168px; }
+.uc-third .uc-stage { margin-bottom: 14px; }
+
+@media (max-width: 760px) {
+  .uc-bracket-wrap { padding: 8px 12px 20px; }
+}
