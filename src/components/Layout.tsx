@@ -208,7 +208,7 @@ export function Layout() {
             </Link>
           </div>
           <ThemeToggle />
-          <button className="burger" onClick={() => setOpen((o) => !o)} aria-label="Меню">
+          <button className="burger" onClick={() => setOpen((o) => !o)} aria-label="Меню" aria-controls="primary-navigation" aria-expanded={open}>
             <span />
             <span />
             <span />
@@ -216,7 +216,7 @@ export function Layout() {
         </div>
       </header>
       <div className="navbar">
-        <nav className={`wrap nav ${open ? 'open' : ''}`}>
+        <nav id="primary-navigation" className={`wrap nav ${open ? 'open' : ''}`}>
           {nav.map(([to, label]) => (
             <NavLink key={to} to={to} end={to === '/'}>
               <span className="motion-roll"><span>{label}</span><span aria-hidden>{label}</span></span>
@@ -255,7 +255,7 @@ export function Layout() {
         <NavLink to="/" end>Главная</NavLink>
         <NavLink to="/matches">Матчи</NavLink>
         <NavLink to="/tournaments">Турниры</NavLink>
-        <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>Меню</button>
+        <button type="button" onClick={() => setOpen((value) => !value)} aria-controls="primary-navigation" aria-expanded={open}>Меню</button>
       </nav>
       <footer className="footer">
         <div className="wrap footer-top">
