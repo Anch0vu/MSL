@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { config } from '../config'
 import { useAccount } from '../lib/account'
 import { api, useData, useDB } from '../lib/data'
 
-type Kind = 'team' | 'player'
+type Kind = 'team' | 'organization' | 'player'
 interface Row {
   nick: string
   role: string
@@ -17,14 +17,18 @@ export function Register() {
   const { db } = useDB()
   const { mode } = useData()
   const { user } = useAccount()
+  const [searchParams] = useSearchParams()
   const open = db.tournaments.filter((t) => t.status === 'registration' || t.status === 'upcoming')
   const closed = db.settings?.registrationOpen === false
-  const [kind, setKind] = useState<Kind>('team')
+  const requestedKind = searchParams.get('kind')
+  const initialKind: Kind = requestedKind === 'organization' || requestedKind === 'player' ? requestedKind : 'team'
+  const [kind, setKind] = useState<Kind>(initialKind)
   const [tid, setTid] = useState(open[0]?.id ?? '')
   const [team, setTeam] = useState({ name: '', tag: '' })
+  const [organization, setOrganization] = useState({ name: '', short: '', kind: 'institute', site: '', description: '' })
   const [rows, setRows] = useState<Row[]>(emptyRows)
   const [f, setF] = useState({ faculty: '', contact: '', comment: '', nick: '', role: '', twitch: '', course: '', website: '', orgId: user?.orgId ?? '' })
-  const [state, setState] = useState<{ status: 'idle' | 'sending' | 'done' | 'error'; msg?: string; auto?: boolean; teamId?: string }>({ status: 'idle' })
+  const [state, setState] = useState<{ status: 'idle' | 'sending' | 'done' | 'error'; msg?: string; auto?: boolean; teamId?: string; orgId?: string }>({ status: 'idle' })
   const [copied, setCopied] = useState(false)
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value })
   const setRow = (i: number, k: keyof Row, v: string) => setRows(rows.map((r, j) => (j === i ? { ...r, [k]: v } : r)))
@@ -33,25 +37,32 @@ export function Register() {
   const payload =
     kind === 'team'
       ? { kind, tournamentId: tid, team, players: rows.filter((r) => r.nick.trim()), captain: rows[0]?.nick, faculty: f.faculty, orgId: f.orgId, contact: f.contact, comment: f.comment, website: f.website }
-      : { kind, tournamentId: tid, nick: f.nick, role: f.role, twitch: f.twitch, course: Number(f.course) || 0, faculty: f.faculty, orgId: f.orgId, contact: f.contact, comment: f.comment, website: f.website }
+      : kind === 'organization'
+        ? { kind, organization: { ...organization }, contact: f.contact, comment: f.comment, website: f.website }
+        : { kind, tournamentId: tid, nick: f.nick, role: f.role, twitch: f.twitch, course: Number(f.course) || 0, faculty: f.faculty, orgId: f.orgId, contact: f.contact, comment: f.comment, website: f.website }
 
   const valid =
-    f.contact.trim() &&
-    (kind === 'team' ? team.name.trim() && team.tag.trim() && rows.filter((r) => r.nick.trim()).length >= 1 : f.nick.trim())
+    !!f.contact.trim() &&
+    (kind === 'team'
+      ? !!team.name.trim() && !!team.tag.trim() && rows.some((r) => r.nick.trim())
+      : kind === 'organization'
+        ? !!organization.name.trim() && !!organization.short.trim()
+        : !!f.nick.trim())
 
-  const asText = () =>
-    kind === 'team'
-      ? `Заявка команды на «${tour?.name ?? '—'}»\nКоманда: ${team.name} [${team.tag}]\nИнститут: ${f.faculty}\nКонтакт: ${f.contact}\nСостав:\n${rows
-          .filter((r) => r.nick)
-          .map((r) => `- ${r.nick} (${r.role})${r.twitch ? ` twitch.tv/${r.twitch}` : ''}`)
-          .join('\n')}\n${f.comment}`
-      : `Заявка игрока\nНик: ${f.nick}\nРоль: ${f.role}\nКурс: ${f.course}\nИнститут: ${f.faculty}\nКонтакт: ${f.contact}\n${f.comment}`
+  const asText = () => {
+    if (kind === 'team') return `Заявка команды на «${tour?.name ?? '—'}»\nКоманда: ${team.name} [${team.tag}]\nИнститут: ${f.faculty}\nКонтакт: ${f.contact}\nСостав:\n${rows
+      .filter((r) => r.nick)
+      .map((r) => `- ${r.nick} (${r.role})${r.twitch ? ` twitch.tv/${r.twitch}` : ''}`)
+      .join('\n')}\n${f.comment}`
+    if (kind === 'organization') return `Заявка организации\nНазвание: ${organization.name}\nКратко: ${organization.short}\nТип: ${organization.kind}\nСайт: ${organization.site}\nКонтакт: ${f.contact}\n${organization.description}`
+    return `Заявка игрока\nНик: ${f.nick}\nРоль: ${f.role}\nКурс: ${f.course}\nОрганизация: ${f.faculty}\nКонтакт: ${f.contact}\n${f.comment}`
+  }
 
   const submit = async () => {
     setState({ status: 'sending' })
     try {
-      const r = await api<{ auto?: boolean; teamId?: string }>('apply', { method: 'POST', body: payload })
-      setState({ status: 'done', auto: r.auto, teamId: r.teamId })
+      const r = await api<{ auto?: boolean; teamId?: string; orgId?: string }>('apply', { method: 'POST', body: payload })
+      setState({ status: 'done', auto: r.auto, teamId: r.teamId, orgId: r.orgId })
     } catch (e) {
       setState({ status: 'error', msg: e instanceof Error ? e.message : String(e) })
     }
@@ -63,17 +74,14 @@ export function Register() {
         <div className="panel pad done-panel">
           <h1>{state.auto ? 'Готово' : 'Заявка отправлена'}</h1>
           {state.auto ? (
-            <p>{kind === 'team' ? 'Команда уже на сайте.' : 'Профиль уже в списке игроков.'} Оформление, логотип и роли меняются в кабинете.</p>
+            <p>{kind === 'team' ? 'Команда уже на сайте.' : kind === 'organization' ? 'Организация уже на сайте.' : 'Профиль уже в списке игроков.'} Данные можно дополнить после публикации.</p>
           ) : (
-            <p>Организатор проверит её и свяжется с вами по контакту «{f.contact}». После подтверждения {kind === 'team' ? 'команда появится в списке участников' : 'профиль появится в списке игроков'}. Войдите в аккаунт перед отправкой, и заявка пройдёт сразу.</p>
+            <p>Организатор проверит её и свяжется с вами по контакту «{f.contact}». После подтверждения {kind === 'team' ? 'команда появится в списке участников' : kind === 'organization' ? 'организация появится в каталоге' : 'профиль появится в списке игроков'}.</p>
           )}
           <div className="form-actions">
-            {state.teamId && (
-              <Link className="btn btn-accent" to={`/teams/${state.teamId}`}>
-                Страница команды
-              </Link>
-            )}
-            <Link className={state.teamId ? 'btn btn-ghost' : 'btn btn-accent'} to="/">
+            {state.teamId && <Link className="btn btn-accent" to={`/teams/${state.teamId}`}>Страница команды</Link>}
+            {state.orgId && <Link className="btn btn-accent" to={`/orgs/${state.orgId}`}>Страница организации</Link>}
+            <Link className={state.teamId || state.orgId ? 'btn btn-ghost' : 'btn btn-accent'} to="/">
               На главную
             </Link>
             <button
@@ -105,12 +113,15 @@ export function Register() {
             <button className={kind === 'team' ? 'on' : ''} onClick={() => setKind('team')}>
               Команда
             </button>
+            <button className={kind === 'organization' ? 'on' : ''} onClick={() => setKind('organization')}>
+              Организация
+            </button>
             <button className={kind === 'player' ? 'on' : ''} onClick={() => setKind('player')}>
               Игрок без команды
             </button>
           </div>
           <div className="panel pad form">
-            <label>
+            {kind !== 'organization' && <label>
               Турнир
               <select value={tid} onChange={(e) => setTid(e.target.value)}>
                 {open.map((t) => (
@@ -120,7 +131,7 @@ export function Register() {
                 ))}
                 <option value="">Без турнира / в общий список</option>
               </select>
-            </label>
+            </label>}
 
             {kind === 'team' ? (
               <>
@@ -154,6 +165,18 @@ export function Register() {
                   )}
                 </div>
               </>
+            ) : kind === 'organization' ? (
+              <div className="form org-application">
+                <div className="form-row">
+                  <label>Полное название *<input value={organization.name} maxLength={120} onChange={(e) => setOrganization({ ...organization, name: e.target.value })} /></label>
+                  <label style={{ maxWidth: 200 }}>Краткое название *<input value={organization.short} maxLength={24} onChange={(e) => setOrganization({ ...organization, short: e.target.value })} /></label>
+                </div>
+                <div className="form-row">
+                  <label>Тип<select value={organization.kind} onChange={(e) => setOrganization({ ...organization, kind: e.target.value })}><option value="institute">Вуз / институт</option><option value="club">Студенческий клуб</option><option value="department">Кафедра</option><option value="other">Другая организация</option></select></label>
+                  <label>Сайт или социальная сеть<input value={organization.site} maxLength={200} onChange={(e) => setOrganization({ ...organization, site: e.target.value })} /></label>
+                </div>
+                <label>Об организации<textarea rows={4} value={organization.description} maxLength={500} onChange={(e) => setOrganization({ ...organization, description: e.target.value })} /></label>
+              </div>
             ) : (
               <div className="form-row">
                 <label>
@@ -175,7 +198,7 @@ export function Register() {
               </div>
             )}
 
-            <div className="form-row">
+            {kind !== 'organization' && <div className="form-row">
               <label>
                 Организация
                 <select
@@ -187,19 +210,17 @@ export function Register() {
                 >
                   <option value="">—</option>
                   {(db.orgs ?? []).filter((o) => !o.closed).map((o) => (
-                    <option key={o.id} value={o.id}>
-                      {o.name}
-                    </option>
+                    <option key={o.id} value={o.id}>{o.name}</option>
                   ))}
                 </select>
               </label>
-              <label>
-                Контакт для связи (Telegram / Discord) *
-                <input value={f.contact} maxLength={120} onChange={set('contact')} />
-              </label>
-            </div>
+            </div>}
             <label>
-              Комментарий
+              Контакт для связи (Telegram / Discord) *
+              <input value={f.contact} maxLength={120} onChange={set('contact')} />
+            </label>
+            <label>
+              {kind === 'organization' ? 'Дополнительный комментарий' : 'Комментарий'}
               <textarea rows={3} value={f.comment} maxLength={500} onChange={set('comment')} />
             </label>
             {/* поле-ловушка для ботов, скрыто от людей */}

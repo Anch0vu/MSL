@@ -359,8 +359,8 @@ function AppsAdmin({ db, dirty, onChanged }: { db: DB; dirty: boolean; onChanged
       {list.map((a) => (
         <div key={a.id} className={`panel pad app-card ${a.status}`}>
           <div className="app-head">
-            <span className="badge badge-registration">{a.kind === 'team' ? 'Команда' : 'Игрок'}</span>
-            <b>{a.kind === 'team' ? `${a.team?.name} [${a.team?.tag}]` : a.nick}</b>
+            <span className="badge badge-registration">{a.kind === 'team' ? 'Команда' : a.kind === 'organization' ? 'Организация' : 'Игрок'}</span>
+            <b>{a.kind === 'team' ? `${a.team?.name} [${a.team?.tag}]` : a.kind === 'organization' ? `${a.organization?.name} [${a.organization?.short}]` : a.nick}</b>
             <span className="muted small">
               {tname(a.tournamentId)} · {fmtDate(a.createdAt.slice(0, 16))}
             </span>
@@ -385,6 +385,11 @@ function AppsAdmin({ db, dirty, onChanged }: { db: DB; dirty: boolean; onChanged
                     {p.twitch && <i className="muted"> · twitch.tv/{p.twitch}</i>}
                   </span>
                 ))}
+              </div>
+            ) : a.kind === 'organization' ? (
+              <div>
+                <small>Тип / сайт</small>
+                {a.organization?.kind || '—'} {a.organization?.site ? `· ${a.organization.site}` : ''}
               </div>
             ) : (
               <div>

@@ -8,7 +8,10 @@ test('MSL brand replaces legacy primary identity', () => {
   const config = read('src/config.ts')
   const css = read('src/styles/msl.css')
   assert.match(config, /Moscow Student's League/)
-  assert.match(config, /Межвузовская киберспортивная лига/)
+  assert.match(config, /Независимая студенческая киберспортивная лига/)
+  assert.doesNotMatch(config, /Межвузовская/)
+  const layout = read('src/components/Layout.tsx')
+  assert.doesNotMatch(layout, /miit\.ru|Сайт университета/)
   const manifest = read('public/manifest.webmanifest')
   assert.match(css, /--msl-red:\s*#e31b23/i)
   assert.match(manifest, /Moscow Student's League/)
@@ -16,17 +19,17 @@ test('MSL brand replaces legacy primary identity', () => {
   assert.doesNotMatch(config, /siteName:\s*'КИБЕРЛИГА'/)
 })
 
-test('homepage names all four universities and uses current brand art', () => {
+test('homepage presents MSL as an independent league with dynamic participants', () => {
   const home = read('src/pages/Home.tsx')
   const css = read('src/styles/msl.css')
-  for (const name of ['РУТ МИИТ', 'НИУ МГСУ', 'Финансовый университет', 'МГТУ им. Н. Э. Баумана']) {
-    assert.ok(home.includes(name), name)
+  for (const fixedName of ['РУТ МИИТ', 'НИУ МГСУ', 'Финансовый университет', 'МГТУ им. Н. Э. Баумана']) {
+    assert.ok(!home.includes(fixedName), fixedName)
   }
+  assert.match(home, /db\.orgs/)
+  assert.match(home, /Независимая студенческая киберспортивная лига/)
   assert.match(home, /brand-art/)
   assert.match(home, /msl-current\.jpg/)
   assert.match(home, /hero-title hero-brand-title/)
-  assert.match(home, /Университеты/)
-  assert.match(home, /\{config\.siteName\} — центр матчей/)
   assert.doesNotMatch(home, /hero-title[^>]*>\{featured\.name\}/)
   assert.match(home, /current-tour-strip/)
   assert.match(css, /\.hero-brand-title/)

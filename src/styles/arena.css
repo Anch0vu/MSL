@@ -46,7 +46,7 @@
 .arena-brand-art { position:relative; z-index:1; min-height:500px; overflow:hidden; opacity:.72; mix-blend-mode:screen; }
 .arena-brand-art::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#141519 0,transparent 44%),linear-gradient(0deg,#141519 0,transparent 42%); }
 .arena-brand-art img { width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.22) saturate(.35); transform:scale(1.08); }
-.arena-universities {
+.arena-participants {
   position:absolute;
   left:0; right:0; bottom:0; z-index:3;
   display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
@@ -54,7 +54,8 @@
   background:rgba(8,8,10,.86);
   backdrop-filter:blur(14px);
 }
-.arena-universities span { padding:15px 18px; border-right:1px solid #373940; color:#c5c6cb; font:800 10px/1.2 monospace; letter-spacing:.05em; text-transform:uppercase; }
+.arena-participants :is(a,span) { padding:15px 18px; border-right:1px solid #373940; color:#c5c6cb; font:800 10px/1.2 monospace; letter-spacing:.05em; text-transform:uppercase; white-space:nowrap; }
+.arena-participants a:hover { color:#fff; background:rgba(227,27,35,.15); }
 .arena-primary { padding-top:18px; padding-bottom:80px; }
 .arena-match-center { border:1px solid #393b43; background:#111217; }
 .arena-panel-head { display:flex; justify-content:space-between; align-items:center; min-height:48px; padding:0 18px; border-bottom:1px solid #30323a; text-transform:uppercase; }
@@ -129,6 +130,14 @@
 .arena-news-grid small { color:#858891; }
 .arena-news-grid h3 { margin:8px 0; font-size:21px; line-height:1.1; }
 .arena-news-grid p { margin:0; color:#9b9da5; font-size:13px; line-height:1.45; }
+.arena-join-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.arena-join-grid>a { position:relative; display:grid; gap:14px; min-height:230px; padding:26px; overflow:hidden; border:1px solid #30323a; background:linear-gradient(145deg,#15161a,#0d0e11); color:#f4f4f2; }
+.arena-join-grid>a::after { content:""; position:absolute; width:100px; height:100px; right:-50px; bottom:-50px; transform:rotate(45deg); background:#e31b23; transition:transform .25s ease; }
+.arena-join-grid>a:hover::after { transform:rotate(45deg) scale(1.25); }
+.arena-join-grid small { color:#e31b23; font:800 10px/1 monospace; }
+.arena-join-grid b { margin-top:16px; font-size:24px; text-transform:uppercase; }
+.arena-join-grid span { color:#9699a2; font-size:13px; line-height:1.5; }
+.arena-join-grid em { align-self:end; color:#e31b23; font:800 10px/1 monospace; font-style:normal; text-transform:uppercase; }
 .arena-cta { margin-top:76px; }
 .arena-cta>div>span { color:#fff; font:800 10px monospace; letter-spacing:.14em; }
 .arena-bottom-nav { display:none; }
@@ -153,8 +162,10 @@
   .arena-brand-art { position:absolute; inset:120px -90px 52px 42%; min-height:0; opacity:.34; }
   .arena-brand-art::after { background:linear-gradient(90deg,#141519,transparent),linear-gradient(0deg,#141519,transparent); }
   .arena-season { max-width:none; }
-  .arena-universities { display:flex; overflow-x:auto; }
-  .arena-universities span { flex:none; padding:13px 14px; }
+  .arena-participants { display:flex; overflow-x:auto; }
+  .arena-participants :is(a,span) { flex:none; padding:13px 14px; }
+  .arena-join-grid { grid-template-columns:1fr; }
+  .arena-join-grid>a { min-height:180px; }
   .arena-primary { padding-top:12px; padding-bottom:30px; }
   .arena-panel-head { min-height:44px; padding:0 13px; }
   .arena-match-main { grid-template-columns:1fr 48px 1fr; min-height:174px; padding:18px 9px 52px; }

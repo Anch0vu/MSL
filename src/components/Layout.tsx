@@ -292,8 +292,9 @@ export function Layout() {
             {config.contactEmail && <a href={`mailto:${config.contactEmail}`}>{config.contactEmail}</a>}
           </div>
           <div>
-            <h4>Информационные ресурсы</h4>
-            <a href="https://miit.ru" target="_blank" rel="noreferrer">Сайт университета</a>
+            <h4>О лиге</h4>
+            <Link to="/faq">Вопросы и ответы</Link>
+            <Link to="/rules">Документы лиги</Link>
           </div>
           <div>
             <h4>Партнёры</h4>

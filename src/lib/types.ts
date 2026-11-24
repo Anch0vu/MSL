@@ -259,7 +259,7 @@ export interface Partner {
 
 export interface Application {
   id: ID
-  kind: 'team' | 'player'
+  kind: 'team' | 'organization' | 'player'
   status: 'pending' | 'approved' | 'rejected'
   createdAt: string
   tournamentId?: ID
@@ -269,6 +269,7 @@ export interface Application {
   userId?: string
   comment?: string
   team?: { name: string; tag: string }
+  organization?: { name: string; short?: string; kind: OrgKind; site?: string; description?: string }
   captain?: string
   players?: { nick: string; role?: string; twitch?: string }[]
   nick?: string

@@ -659,7 +659,8 @@ function steamVerify(string $returnTo): ?int
 /** Создаёт заявку (сайт или Discord-бот), возвращает её id. */
 function insertApplication(array $b, string $userId): string
 {
-    $kind = ($b['kind'] ?? '') === 'player' ? 'player' : 'team';
+    $requestedKind = (string)($b['kind'] ?? 'team');
+    $kind = in_array($requestedKind, ['team', 'organization', 'player'], true) ? $requestedKind : 'team';
     foreach (docRead()['db']['orgs'] ?? [] as $o) if ($o['id'] === ($b['orgId'] ?? '') && !empty($o['closed'])) $b['orgId'] = '';
     $row = [
         'id' => uid('app'), 'kind' => $kind, 'tournament_id' => str($b['tournamentId'] ?? '', 64),
@@ -667,7 +668,15 @@ function insertApplication(array $b, string $userId): string
         'contact' => str($b['contact'] ?? '', 120, true), 'comment' => str($b['comment'] ?? '', 500), 'created_at' => now(),
         'team_name' => null, 'team_tag' => null, 'captain' => null, 'players' => null, 'nick' => null, 'role' => null, 'twitch' => null, 'course' => null,
     ];
-    if ($kind === 'team') {
+    if ($kind === 'organization') {
+        $org = is_array($b['organization'] ?? null) ? $b['organization'] : [];
+        $row['team_name'] = str($org['name'] ?? '', 120, true);
+        $row['team_tag'] = mb_strtoupper(str($org['short'] ?? '', 24, true));
+        $orgKind = (string)($org['kind'] ?? 'other');
+        $row['role'] = in_array($orgKind, ['institute', 'club', 'department', 'other'], true) ? $orgKind : 'other';
+        $row['twitch'] = str($org['site'] ?? '', 200);
+        $row['players'] = json_encode(['description' => str($org['description'] ?? '', 500)], JSON_UNESCAPED_UNICODE);
+    } elseif ($kind === 'team') {
         $row['team_name'] = str($b['team']['name'] ?? '', 60, true);
         $row['team_tag'] = mb_strtoupper(str($b['team']['tag'] ?? '', 4, true));
         $players = [];
@@ -696,7 +705,19 @@ function applyApplication(array $app, bool $strict): ?string
     return docTx(function (&$d, &$changed) use ($app, $strict) {
         $tid = null;
         $db = &$d['db'];
-        if ($app['kind'] === 'team') {
+        if ($app['kind'] === 'organization') {
+            $db['orgs'] ??= [];
+            if ($strict) foreach ($db['orgs'] as $org) if (mb_strtolower((string)$org['name']) === mb_strtolower((string)$app['organization']['name'])) fail(409, 'Организация с таким названием уже есть');
+            $tid = uid('org');
+            $db['orgs'][] = array_filter([
+                'id' => $tid,
+                'name' => $app['organization']['name'],
+                'short' => $app['organization']['short'],
+                'kind' => $app['organization']['kind'],
+                'description' => $app['organization']['description'],
+                'site' => $app['organization']['site'],
+            ], fn($x) => $x !== '');
+        } elseif ($app['kind'] === 'team') {
             if ($strict) {
                 if (mb_strlen($app['team']['name']) < 2) fail(422, 'Название: от 2 символов');
                 foreach ($db['teams'] as $o) if (mb_strtolower($o['name']) === mb_strtolower($app['team']['name'])) fail(409, 'Команда с таким названием уже есть');
@@ -749,7 +770,10 @@ function appOut(array $r): array
         'tournamentId' => $r['tournament_id'], 'contact' => $r['contact'], 'faculty' => $r['faculty'], 'orgId' => $r['org_id'],
         'userId' => $r['user_id'], 'comment' => $r['comment'], 'note' => $r['note'], 'decidedAt' => iso($r['decided_at']),
     ];
-    if ($r['kind'] === 'team') {
+    if ($r['kind'] === 'organization') {
+        $orgData = json_decode((string)$r['players'], true) ?: [];
+        $a['organization'] = ['name' => $r['team_name'], 'short' => $r['team_tag'], 'kind' => $r['role'] ?: 'other', 'site' => $r['twitch'], 'description' => $orgData['description'] ?? ''];
+    } elseif ($r['kind'] === 'team') {
         $a['team'] = ['name' => $r['team_name'], 'tag' => $r['team_tag']];
         $a['players'] = json_decode((string)$r['players'], true) ?: [];
         $a['captain'] = $r['captain'];
@@ -1359,7 +1383,9 @@ try {
             // с аккаунтом заявка проходит сама, без анкеты у организатора; без аккаунта остаётся на модерации
             if ($uid !== '' && ($set['autoApprove'] ?? true) !== false) {
                 try {
-                    $res['teamId'] = applyApplication(appOut(q('SELECT * FROM applications WHERE id=?', [$id])->fetch()), true);
+                    $createdId = applyApplication(appOut(q('SELECT * FROM applications WHERE id=?', [$id])->fetch()), true);
+                    if (($b['kind'] ?? '') === 'organization') $res['orgId'] = $createdId;
+                    elseif (($b['kind'] ?? '') === 'team') $res['teamId'] = $createdId;
                 } catch (Throwable $e) {
                     q('DELETE FROM applications WHERE id=?', [$id]);
                     throw $e;

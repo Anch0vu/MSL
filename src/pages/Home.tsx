@@ -1,6 +1,5 @@
 import { useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { config } from '../config'
 import { MatchList } from '../components/MatchList'
 import { SectionHead } from '../components/ui'
 import { PartnerStrip } from '../components/Partners'
@@ -41,6 +40,7 @@ export function Home() {
 
   const primaryA = primaryMatch ? team(primaryMatch.a) : undefined
   const primaryB = primaryMatch ? team(primaryMatch.b) : undefined
+  const participants = (db.orgs ?? []).filter((org) => !org.closed).slice(0, 8)
 
   return (
     <div className="arena-home">
@@ -54,11 +54,11 @@ export function Home() {
                 <span>MOSCOW</span>
               </div>
               <h1 className="hero-title hero-brand-title">
-                Университеты<br />
-                <em>выходят на арену</em>
+                Твоя игра.<br />
+                <em>Твоя лига.</em>
               </h1>
               <p className="hero-desc">
-                {config.siteName} — центр матчей, команд и турниров студенческой киберспортивной лиги Москвы.
+                Независимая студенческая киберспортивная лига Москвы. Открытые турниры, команды, игроки и прямые трансляции — на одной арене.
               </p>
               <div className="arena-actions">
                 <Link className="btn btn-accent motion-magnetic" to="/tournaments">Открыть сезон</Link>
@@ -68,11 +68,12 @@ export function Home() {
             <div className="brand-art arena-brand-art" aria-hidden>
               <img src="/brand/msl-current.jpg" alt="" />
             </div>
-            <div className="arena-universities" aria-label="Университеты-участники">
-              <span>РУТ МИИТ</span>
-              <span>НИУ МГСУ</span>
-              <span>Финансовый университет</span>
-              <span>МГТУ им. Н. Э. Баумана</span>
+            <div className="arena-participants" aria-label="Организации-участники">
+              {participants.length ? participants.map((org) => (
+                <Link key={org.id} to={`/orgs/${org.id}`}>{org.short || org.name}</Link>
+              )) : (
+                <span>Открытая лига для студенческих команд и организаций</span>
+              )}
             </div>
           </HeroMotion>
         </div>
@@ -217,6 +218,17 @@ export function Home() {
             </div>
           </section>
         )}
+
+        <section className="arena-section arena-join">
+          <div className="arena-section-head compact">
+            <div><span>04</span><h2>Стать частью MSL</h2></div>
+          </div>
+          <div className="arena-join-grid">
+            <Link to="/register?kind=team"><small>01</small><b>Заявить команду</b><span>Участвуйте в турнире или войдите в общий список лиги.</span><em>Подать заявку →</em></Link>
+            <Link to="/register?kind=organization"><small>02</small><b>Подключить организацию</b><span>Представляйте вуз, клуб, кафедру или студенческое объединение.</span><em>Стать участником →</em></Link>
+            <Link to="/register?kind=player"><small>03</small><b>Найти команду</b><span>Создайте профиль свободного игрока и заявите о себе.</span><em>В общий список →</em></Link>
+          </div>
+        </section>
 
         <section className="arena-section arena-partners">
           <SectionHead title="Партнёры" />

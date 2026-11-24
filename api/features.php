@@ -325,8 +325,9 @@ function fxAppNotify(string $id, bool $auto): void
 {
     $a = q('SELECT * FROM applications WHERE id=?', [$id])->fetch();
     if (!$a) return;
-    $what = $a['kind'] === 'team' ? "команда {$a['team_name']} [{$a['team_tag']}]" : "игрок {$a['nick']}";
-    notify('apps', ($auto ? '🆕 Зарегистрирована ' : '📝 Заявка на модерации: ') . $what, fxSite() . ($auto ? '/#/teams' : '/#/admin'));
+    $what = $a['kind'] === 'team' ? "команда {$a['team_name']} [{$a['team_tag']}]" : ($a['kind'] === 'organization' ? "организация {$a['team_name']} [{$a['team_tag']}]" : "игрок {$a['nick']}");
+    $target = $auto && $a['kind'] === 'organization' ? '/#/orgs' : ($auto ? '/#/teams' : '/#/admin');
+    notify('apps', ($auto ? '🆕 Зарегистрирована ' : '📝 Заявка на модерации: ') . $what, fxSite() . $target);
 }
 
 // ---------- игры Dota 2 из OpenDota ----------

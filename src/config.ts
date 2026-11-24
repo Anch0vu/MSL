@@ -1,7 +1,7 @@
 export const config = {
   siteName: "Moscow Student's League",
-  siteSub: 'Межвузовская киберспортивная лига',
-  tagline: 'Москва учится. Москва играет.',
+  siteSub: 'Независимая студенческая киберспортивная лига',
+  tagline: 'Создана студентами. Открыта для всех.',
   game: 'Дисциплина',
   registrationUrl: '',
   apiBase: 'api/',

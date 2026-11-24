@@ -113,12 +113,12 @@ function Brand({ big }: { big?: boolean }) {
   return (
     <div className={`obs-brand${big ? ' big' : ''}`}>
       <svg viewBox="0 0 40 40" aria-hidden>
-        <rect width="40" height="40" rx="9" fill="#0054b8" />
-        <path d="M11 27 L24 14 M17 27 L28 16 M23 27 L29 21 M20 13 H28 V21" stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 3h34v28l-8 6H3z" fill="#e31b23" />
+        <text x="20" y="25" fill="#fff" textAnchor="middle" fontSize="12" fontWeight="900">MSL</text>
       </svg>
       <div>
-        <b>{config.siteName}</b>
-        <small>{config.siteSub}</small>
+        <b>MOSCOW STUDENT&apos;S LEAGUE</b>
+        <small>INDEPENDENT STUDENT ESPORTS</small>
       </div>
     </div>
   )
@@ -210,9 +210,9 @@ function Lines() {
     <svg className="obs-lines" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden>
       <defs>
         <linearGradient id="obs-g" x1="0" x2="1">
-          <stop offset="0" stopColor="#2f7bff" stopOpacity="0" />
-          <stop offset=".5" stopColor="#2f7bff" stopOpacity=".55" />
-          <stop offset="1" stopColor="#2f7bff" stopOpacity="0" />
+          <stop offset="0" stopColor="#e31b23" stopOpacity="0" />
+          <stop offset=".5" stopColor="#e31b23" stopOpacity=".55" />
+          <stop offset="1" stopColor="#e31b23" stopOpacity="0" />
         </linearGradient>
       </defs>
       {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -493,10 +493,10 @@ function Picks() {
         </div>
         <div className="uh-pbot">
           <svg viewBox="0 0 40 40" width="44" height="44" aria-hidden>
-            <rect width="40" height="40" fill="#f50db4" />
+            <rect width="40" height="40" fill="#e31b23" />
             <path d="M11 27 L24 14 M17 27 L28 16 M23 27 L29 21 M20 13 H28 V21" stroke="#fff" strokeWidth="2.6" fill="none" strokeLinecap="square" />
           </svg>
-          <b>КИБЕРЛИГА</b>
+          <b>MSL</b>
           <PartnersBar cls="uh-pp" />
         </div>
       </div>
@@ -519,7 +519,9 @@ function Stinger() {
         <i className="s1" />
         <i className="s2" />
         <i className="s3" />
+        <div className="sting-scan" />
         <div className="obs-sting-logo">
+          <span className="sting-wordmark">MSL / ON AIR</span>
           <Brand big />
           <span className="obs-sting-x">
             × <VoidSoundMark size={44} /> VoidSound
@@ -553,13 +555,13 @@ export function UcHead({ chip }: { chip?: string }) {
     <div className="ucs-head">
       <div className="ucs-left">
         <svg viewBox="0 0 40 40" width="44" height="44" aria-hidden>
-          <rect width="40" height="40" fill="#f50db4" />
+          <rect width="40" height="40" fill="#e31b23" />
           <path d="M11 27 L24 14 M17 27 L28 16 M23 27 L29 21 M20 13 H28 V21" stroke="#fff" strokeWidth="2.6" fill="none" strokeLinecap="square" />
         </svg>
         <span className="ucs-chip">{chip ?? tour?.name}</span>
       </div>
       <div className="ucs-word">
-        <b>КИБЕРЛИГА</b>
+        <b>MSL</b>
         <span>· CUP ·</span>
       </div>
       <span className="ucs-chip dark">LIVESTREAM</span>
@@ -806,8 +808,8 @@ export function ObsIndex({ children }: { children?: ReactNode }) {
         </div>)}
       </section>
       <div className="panel pad obs-item obs-stinger-download">
-        <div><b>Видеопереход с прозрачностью</b><p className="muted small">OBS → Переходы сцен → «+» → Stinger. Файл WebM, точка перехода — 600 мс.</p></div>
-        <a className="btn btn-accent" href="obs/stinger.webm" download>Скачать stinger.webm</a>
+        <div><b>Stinger-переход MSL</b><p className="muted small">Готовый анимированный источник: 1920 × 1080, 60 FPS, длительность 1,2 с, точка смены сцены — 600 мс. Откройте источник для проверки или захвата в WebM с альфа-каналом.</p></div>
+        {key ? <Link className="btn btn-accent" to={obsScenePath('stinger', key).slice(1)} target="_blank" rel="noreferrer">Открыть переход</Link> : <button className="btn btn-accent" disabled>Открыть переход</button>}
       </div>
     </div>
   )

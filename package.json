@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "node --test tests/msl-brand.test.mjs tests/consent.test.mjs tests/motion.test.mjs tests/arena-layout.test.mjs && php tests/seed-msl-data.php",
+    "test": "node --test tests/msl-brand.test.mjs tests/consent.test.mjs tests/motion.test.mjs tests/arena-layout.test.mjs tests/registration.test.mjs tests/broadcast.test.mjs && php tests/seed-msl-data.php",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

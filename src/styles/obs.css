@@ -574,3 +574,130 @@ html.obs-root #root {
     animation-duration: .01ms !important; animation-iteration-count: 1 !important;
   }
 }
+
+
+/* ---------- MSL broadcast system: independent black / red / white ---------- */
+.obs {
+  --msl-broadcast-red: #e31b23;
+  --msl-broadcast-black: #070707;
+  --brand: var(--msl-broadcast-red);
+  --brand-nav: #ff5960;
+  --panel: #111217;
+  --tile: rgba(17,18,23,.94);
+  --tile-line: #3a3b42;
+  --line: #2b2c31;
+  --text-2: #d9d9dc;
+  --muted: #94969e;
+}
+.obs-full {
+  color: #f6f6f4;
+  background:
+    radial-gradient(circle at 82% 12%, rgba(227,27,35,.28), transparent 34%),
+    linear-gradient(135deg,#070707 0%,#111217 58%,#31070b 100%);
+}
+.obs-full .obs-kicker,.obs-full .obs-brand b { color:#f6f6f4; }
+.obs-full .obs-sub,.obs-full .obs-brand small,.obs-full .obs-partners-t { color:#a8a9ae; }
+.obs-full .obs-count,.obs-full .obs-upcoming h3,.obs-full .obs-up-time { color:var(--msl-broadcast-red); }
+.obs-full .obs-chip,.obs-full .obs-upcoming {
+  color:#f6f6f4;
+  border-color:#3d3e45;
+  background:rgba(12,12,14,.9);
+  box-shadow:none;
+}
+.obs-full .obs-up-row { color:#f0f0ef; border-color:#303138; }
+.obs-full .obs-up-vs { color:#888a92; }
+.obs-full .obs-pt:not(.vs),.obs-full .obs-links span {
+  color:#f0f0ef;
+  border-color:#3d3e45;
+  background:rgba(24,24,28,.92);
+}
+.obs-brand svg { filter:drop-shadow(0 0 18px rgba(227,27,35,.28)); }
+.obs-chip,.obs-upcoming,.obs-plate,.obs-lower,.obs-hud-bar,.obs-pt { border-radius:0; }
+.obs-hud-score,.obs-pk-mid,.obs-lower-bar { background:var(--msl-broadcast-red); }
+.obs-picks-top { border-bottom-color:var(--msl-broadcast-red); }
+.obs.uc { background:#f3f3f1; color:#0a0a0b; --rut-blue:#e31b23; --rut-blue-deep:#111217; }
+.ucs-chip { background:#e7e7e5; border-color:#cececc; color:#151517; }
+.ucs-chip.dark,.ucs-tags span:first-child,.ucs-logo,.ucs-team li i { background:#111217; border-color:#111217; }
+.ucs-tags span,.ucs-ftag,.ucs-winner,.ucs-score.win,.ucs-wipe { background:#e31b23; border-color:#e31b23; }
+.ucs-vst { color:#e31b23; }
+.ucs-date u { text-decoration-color:#e31b23; }
+.ucs-ring { stroke:#d0d0ce; }
+.uh { --pink:#e31b23; color:#121214; }
+.uh-sc,.uh-psc,.uh-sub em,.uh-idle span,.uh-ptitle { background:#111217; }
+.uh-pips i.on,.uh-sc.uh-ld,.uh-psc.uh-ld,.uh-sub span,.uh-idle i,.uh-pstage { background:#e31b23; }
+
+/* 1200 ms stinger; OBS scene cut point is exactly 600 ms. */
+.obs-sting {
+  --cut-point: 600ms;
+  isolation:isolate;
+  overflow:hidden;
+  background:transparent;
+}
+.obs-sting i {
+  top:-20%;
+  left:-30%;
+  width:160%;
+  height:140%;
+  transform:translateX(-130%) skewX(-14deg);
+  clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  animation:obs-sweep 1200ms cubic-bezier(.72,0,.24,1) both;
+}
+.obs-sting .s1 { background:#4a090d; animation-delay:calc(var(--t) + 0ms); }
+.obs-sting .s2 {
+  background:repeating-linear-gradient(135deg,#e31b23 0 18px,#c5121a 18px 36px);
+  animation-delay:calc(var(--t) + 55ms);
+}
+.obs-sting .s3 {
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),
+    #08080a;
+  background-size:48px 48px;
+  animation-delay:calc(var(--t) + 110ms);
+}
+.sting-scan {
+  position:absolute;
+  z-index:4;
+  inset:0 auto 0 -12%;
+  width:16%;
+  opacity:0;
+  transform:skewX(-14deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.82),transparent);
+  mix-blend-mode:screen;
+  animation:msl-sting-scan 1200ms var(--t) ease-in-out both;
+}
+.sting-wordmark {
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.44);
+  color:#fff;
+  background:#e31b23;
+  font:800 18px/1 ui-monospace,monospace;
+  letter-spacing:.16em;
+}
+.obs-sting-logo { z-index:5; }
+.obs-sting-x { color:#d8d8da; }
+@keyframes msl-sting-scan {
+  0%,32% { left:-12%; opacity:0; }
+  42%,58% { opacity:1; }
+  72%,100% { left:112%; opacity:0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sting-scan { animation-duration:.01ms !important; }
+}
+
+/* Review fixes: freeze every stinger layer and remove remaining legacy blue. */
+.obs-sting.paused .sting-scan { animation-play-state:paused; }
+.obs-brand small,.obs-plate-name small,.obs-vs { color:#ff646a; }
+.obs-plate {
+  background:linear-gradient(90deg,color-mix(in srgb,var(--tc) 48%,#111217),#111217);
+}
+.obs-plate.b {
+  background:linear-gradient(270deg,color-mix(in srgb,var(--tc) 48%,#111217),#111217);
+}
+.obs-hud-bar,.obs-hud-dota,.obs-hud-dota.b,.obs-hud-tag {
+  background:rgba(10,10,12,.94);
+}
+.obs-lower { background:linear-gradient(90deg,rgba(7,7,7,.98),rgba(26,26,30,.94)); }
+.obs-lower-bar { background:linear-gradient(#ff5960,#e31b23); }
+.obs-lower span { color:#ff646a; }
+.obs-lower small { color:#e1e1e3; border-left-color:rgba(255,255,255,.2); }
