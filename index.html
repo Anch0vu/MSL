@@ -7,10 +7,15 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23070707'/><path d='M2 2h28v22l-6 6H2z' fill='%23e31b23'/><text x='16' y='20' text-anchor='middle' font-family='Arial' font-size='9' font-weight='900' fill='white'>MSL</text></svg>" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#070707" />
-    <meta name="description" content="Moscow Student's League — межвузовские киберспортивные турниры Москвы: матчи, сетки, команды и трансляции." />
+    <meta name="description" content="Moscow Student's League — независимая студенческая киберспортивная лига: турниры, матчи, сетки, команды и трансляции." />
     <script>
       try {
-        if (!/^#\/obs/.test(location.hash) && localStorage.getItem('cup-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark')
+        if (!/^#\/obs/.test(location.hash)) {
+          const storedTheme = localStorage.getItem('cup-theme')
+          const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark'
+          document.documentElement.setAttribute('data-theme', theme)
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#070707' : '#f4f4f2')
+        }
       } catch (e) {}
     </script>
     <link rel="apple-touch-icon" href="/icon-192.png" />

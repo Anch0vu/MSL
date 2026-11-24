@@ -53,10 +53,11 @@ export function Home() {
                 <ScrambleText text="MSL / SEASON 01" />
                 <span>MOSCOW</span>
               </div>
-              <h1 className="hero-title hero-brand-title">
-                Твоя игра.<br />
-                <em>Твоя лига.</em>
+              <h1 className="msl-3d-wordmark" aria-label="Moscow Student's League">
+                <span className="msl-3d-moscow" data-text="MOSCOW">MOSCOW</span>
+                <span className="msl-3d-league" data-text="STUDENT’S LEAGUE">STUDENT’S LEAGUE</span>
               </h1>
+              <p className="arena-hero-slogan">Твоя игра <i /> Твоя лига</p>
               <p className="hero-desc">
                 Независимая студенческая киберспортивная лига Москвы. Открытые турниры, команды, игроки и прямые трансляции — на одной арене.
               </p>

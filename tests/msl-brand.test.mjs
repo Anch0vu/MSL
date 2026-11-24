@@ -29,12 +29,41 @@ test('homepage presents MSL as an independent league with dynamic participants',
   assert.match(home, /Независимая студенческая киберспортивная лига/)
   assert.match(home, /brand-art/)
   assert.match(home, /msl-current\.jpg/)
-  assert.match(home, /hero-title hero-brand-title/)
-  assert.doesNotMatch(home, /hero-title[^>]*>\{featured\.name\}/)
+  assert.match(home, /msl-3d-wordmark/)
+  assert.doesNotMatch(home, /msl-3d-wordmark[^>]*>\{featured\.name\}/)
   assert.match(home, /current-tour-strip/)
-  assert.match(css, /\.hero-brand-title/)
+  assert.match(css, /\.hero-title/)
   assert.match(css, /\.current-tour-strip/)
   assert.match(css, /radial-gradient\([^\n]+--msl-red/s)
+})
+
+test('hero uses a readable dimensional Moscow Students League wordmark', () => {
+  const home = read('src/pages/Home.tsx')
+  const arena = read('src/styles/arena.css')
+  assert.match(home, /className="msl-3d-wordmark"/)
+  assert.match(home, /MOSCOW/)
+  assert.match(home, /STUDENT’S LEAGUE/)
+  assert.match(arena, /\.msl-3d-wordmark/)
+  assert.match(arena, /text-shadow:/)
+  assert.match(arena, /-webkit-text-stroke:/)
+  assert.doesNotMatch(arena, /font-family:\s*Impact/)
+})
+
+test('theme toggle persists an explicit light or dark MSL theme', () => {
+  const layout = read('src/components/Layout.tsx')
+  const index = read('index.html')
+  const msl = read('src/styles/msl.css')
+  assert.match(layout, /setAttribute\('data-theme', next \? 'dark' : 'light'\)/)
+  assert.match(layout, /aria-pressed=\{dark\}/)
+  assert.match(index, /data-theme/)
+  assert.match(msl, /html\[data-theme='light'\]/)
+  assert.match(msl, /html\[data-theme='dark'\]/)
+})
+
+test('tournament editor exposes an explicit finish action', () => {
+  const admin = read('src/pages/Admin.tsx')
+  assert.match(admin, /Завершить турнир/)
+  assert.match(admin, /status:\s*'finished'/)
 })
 
 test('cookie settings and legal routes are reachable', () => {

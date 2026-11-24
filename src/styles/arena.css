@@ -30,16 +30,66 @@
 .arena-hero-copy { position: relative; z-index: 2; align-self: center; padding: 66px 24px 84px 58px; }
 .arena-season { display:flex; justify-content:space-between; max-width:450px; color:#e31b23; font:800 11px/1 monospace; letter-spacing:.16em; }
 .arena-season span:last-child { color:#8b8e97; }
-.arena-home .hero-brand-title {
-  max-width: 700px;
-  margin: 28px 0 18px;
-  color:#f4f4f2;
-  font-size:clamp(52px,6.6vw,92px);
-  line-height:.82;
+.msl-3d-wordmark {
+  position:relative;
+  z-index:2;
+  width:min(760px,100%);
+  margin:30px 0 18px;
+  font-family:var(--font-display);
+  font-size:clamp(50px,6.8vw,94px);
+  font-weight:950;
+  line-height:.76;
   letter-spacing:-.065em;
   text-transform:uppercase;
+  text-wrap:balance;
+  transform:perspective(760px) rotateX(2deg) rotateY(-3deg);
+  transform-origin:left center;
 }
-.arena-home .hero-brand-title em { color:#e31b23; font-style:normal; }
+.msl-3d-wordmark span {
+  position:relative;
+  display:block;
+  width:max-content;
+  max-width:100%;
+  color:#e31b23;
+  -webkit-text-stroke:clamp(1px,.12vw,2px) #09090a;
+  paint-order:stroke fill;
+  text-shadow:
+    1px 1px 0 #8c0c12,
+    2px 2px 0 #71090e,
+    3px 3px 0 #59070b,
+    4px 4px 0 #410507,
+    5px 5px 0 #290304,
+    8px 9px 0 #080809,
+    13px 14px 28px rgba(0,0,0,.68);
+}
+.msl-3d-wordmark span::before {
+  content:attr(data-text);
+  position:absolute;
+  inset:0;
+  z-index:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.3);
+  clip-path:polygon(0 0,100% 0,100% 32%,0 47%);
+  transform:translate(-1px,-1px);
+  pointer-events:none;
+}
+.msl-3d-league {
+  margin-top:.18em;
+  font-size:.58em;
+  letter-spacing:-.035em;
+}
+.arena-hero-slogan {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 16px;
+  color:#f4f4f2;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.arena-hero-slogan i { width:26px; height:2px; background:#e31b23; }
 .arena-home .hero-desc { max-width:560px; color:#b8bac1; font-size:15px; line-height:1.55; }
 .arena-actions { display:flex; align-items:center; gap:22px; margin-top:26px; }
 .arena-text-link { color:#f4f4f2; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
@@ -154,7 +204,10 @@
   .arena-hero .wrap,.arena-primary { width:100%; padding-left:14px; padding-right:14px; }
   .arena-hero-frame { min-height:430px; grid-template-columns:1fr; border-top:0; }
   .arena-hero-copy { padding:38px 20px 112px; }
-  .arena-home .hero-brand-title { margin-top:28px; font-size:42px; line-height:.86; }
+  .msl-3d-wordmark { margin-top:28px; font-size:clamp(44px,14vw,62px); line-height:.78; letter-spacing:-.06em; transform:perspective(540px) rotateX(2deg) rotateY(-2deg); }
+  .msl-3d-wordmark span { text-shadow:1px 1px 0 #8c0c12,2px 2px 0 #71090e,3px 3px 0 #59070b,5px 5px 0 #080809,9px 10px 20px rgba(0,0,0,.72); }
+  .msl-3d-league { font-size:.55em; letter-spacing:-.025em; }
+  .arena-hero-slogan { font-size:9px; letter-spacing:.1em; }
   .arena-home .hero-desc { max-width:300px; font-size:13px; }
   .arena-actions { gap:14px; margin-top:22px; }
   .arena-actions .btn { min-height:44px; padding:0 15px; }
@@ -216,7 +269,7 @@
     position:fixed;
     left:0; right:0; bottom:0; z-index:60;
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(5,1fr);
     min-height:62px;
     padding-bottom:env(safe-area-inset-bottom);
     border-top:1px solid #3a3c44;
@@ -227,7 +280,8 @@
     display:grid; place-items:center;
     border:0; border-top:2px solid transparent;
     background:none; color:#858891;
-    font:800 9px/1 monospace;
+    min-width:0;
+    font:800 8px/1 var(--font);
     text-transform:uppercase;
   }
   .arena-bottom-nav a.active { border-top-color:#e31b23; color:#fff; }
@@ -241,3 +295,27 @@
 @media (prefers-reduced-motion: reduce) {
   .arena-tournament-rail { scroll-behavior:auto; }
 }
+
+html[data-theme='light'] .arena-home {
+  background:radial-gradient(circle at 50% -10%,rgba(227,27,35,.09),transparent 34rem),#f4f4f2;
+}
+html[data-theme='light'] .arena-match-center,
+html[data-theme='light'] .arena-stats,
+html[data-theme='light'] .arena-scoreboard { border-color:#c9c9cd; background:#fff; }
+html[data-theme='light'] .arena-panel-head,
+html[data-theme='light'] .arena-match-time,
+html[data-theme='light'] .arena-result-list,
+html[data-theme='light'] .arena-result-list>a { border-color:#d3d3d6; }
+html[data-theme='light'] .arena-match-main,
+html[data-theme='light'] .arena-result-list>a { color:#171719; }
+html[data-theme='light'] .arena-match-time { background:#ededeb; color:#55555d; }
+html[data-theme='light'] .arena-match-empty span,
+html[data-theme='light'] .arena-stats span,
+html[data-theme='light'] .arena-result-list small { color:#686871; }
+html[data-theme='light'] .arena-stats>div { border-color:#d3d3d6; }
+html[data-theme='light'] .arena-stats b,
+html[data-theme='light'] .arena-section-head h2 { color:#111113; }
+html[data-theme='light'] .arena-news-grid>a,
+html[data-theme='light'] .arena-join-grid>a { border-color:#c9c9cd; background:#fff; color:#111113; }
+html[data-theme='light'] .arena-news-grid p,
+html[data-theme='light'] .arena-join-grid span { color:#5f5f67; }

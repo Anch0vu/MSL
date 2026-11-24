@@ -829,6 +829,21 @@ function TournamentsAdmin({ db, update }: P) {
               </select>
             </label>
           </div>
+          <div className="admin-status-actions">
+            <span className="muted small">Статус турнира меняется вручную. Завершение матчей само по себе не закрывает турнир.</span>
+            {t.status !== 'finished' && (
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => {
+                  if (!window.confirm(`Завершить турнир «${t.name}»? Он перейдёт в архив завершённых.`)) return
+                  setT({ status: 'finished', endDate: t.endDate ?? new Date().toISOString().slice(0, 10) })
+                }}
+              >
+                Завершить турнир
+              </button>
+            )}
+          </div>
           <div className="form-row">
             <label>
               Начало

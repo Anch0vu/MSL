@@ -74,8 +74,8 @@ function ThemeToggle() {
   const flip = () => {
     const next = !dark
     setDark(next)
-    if (next) document.documentElement.setAttribute('data-theme', 'dark')
-    else document.documentElement.removeAttribute('data-theme')
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next ? '#070707' : '#f4f4f2')
     try {
       localStorage.setItem('cup-theme', next ? 'dark' : 'light')
     } catch {
@@ -83,7 +83,7 @@ function ThemeToggle() {
     }
   }
   return (
-    <button type="button" className="theme-btn" onClick={flip} title={dark ? 'Светлая тема' : 'Тёмная тема'} aria-label={dark ? 'Светлая тема' : 'Тёмная тема'}>
+    <button type="button" className="theme-btn" onClick={flip} title={dark ? 'Включить светлую тему' : 'Включить тёмную тему'} aria-label={dark ? 'Включить светлую тему' : 'Включить тёмную тему'} aria-pressed={dark}>
       {dark ? (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <circle cx="12" cy="12" r="4" />
@@ -255,6 +255,7 @@ export function Layout() {
         <NavLink to="/" end>Главная</NavLink>
         <NavLink to="/matches">Матчи</NavLink>
         <NavLink to="/tournaments">Турниры</NavLink>
+        <NavLink to="/admin">Орга</NavLink>
         <button type="button" onClick={() => setOpen((value) => !value)} aria-controls="primary-navigation" aria-expanded={open}>Меню</button>
       </nav>
       <footer className="footer">
