@@ -226,7 +226,7 @@ export function Home() {
           </div>
           <div className="arena-join-grid">
             <Link to="/register?kind=team"><small>01</small><b>Заявить команду</b><span>Участвуйте в турнире или войдите в общий список лиги.</span><em>Подать заявку →</em></Link>
-            <Link to="/register?kind=organization"><small>02</small><b>Подключить организацию</b><span>Представляйте вуз, клуб, кафедру или студенческое объединение.</span><em>Стать участником →</em></Link>
+            <Link to="/league"><small>02</small><b>Подключить организацию</b><span>Представляйте вуз, клуб, кафедру или студенческое объединение.</span><em>Стать участником →</em></Link>
             <Link to="/register?kind=player"><small>03</small><b>Найти команду</b><span>Создайте профиль свободного игрока и заявите о себе.</span><em>В общий список →</em></Link>
           </div>
         </section>

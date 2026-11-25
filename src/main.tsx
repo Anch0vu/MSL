@@ -11,6 +11,7 @@ import { OrgPage, Orgs } from './pages/Orgs'
 import { Article, News, Rules } from './pages/Content'
 import { Register } from './pages/Register'
 import { Faq } from './pages/Faq'
+import { League } from './pages/League'
 import { Home } from './pages/Home'
 import { MyMatches } from './pages/My'
 import { Rating } from './pages/Rating'
@@ -53,6 +54,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="privacy" element={<Privacy />} />
             <Route path="cookies" element={<Cookies />} />
             <Route path="orgs" element={<Orgs />} />
+            <Route path="league" element={<League />} />
             <Route path="orgs/:id" element={<OrgPage />} />
             <Route path="account" element={<Account />} />
             <Route path="my" element={<MyMatches />} />

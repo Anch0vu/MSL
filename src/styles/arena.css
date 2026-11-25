@@ -319,3 +319,76 @@ html[data-theme='light'] .arena-news-grid>a,
 html[data-theme='light'] .arena-join-grid>a { border-color:#c9c9cd; background:#fff; color:#111113; }
 html[data-theme='light'] .arena-news-grid p,
 html[data-theme='light'] .arena-join-grid span { color:#5f5f67; }
+
+/* Responsive fixes for narrow phones and both color themes. */
+html, body, #root, .app { width:100%; min-width:0; max-width:100%; }
+.app { overflow-x:clip; }
+.header-in,.header-in .brand,.brand-text,.footer-top>div,.footer-meta,.arena-primary>* { min-width:0; }
+.brand-text small,.footer-meta { overflow-wrap:anywhere; }
+.footer { width:100%; overflow:hidden; }
+.footer-top { min-width:0; }
+.socials { flex-wrap:wrap; }
+.socials a { width:42px; height:42px; border:1px solid #55565e; border-radius:4px; background:#18191e; color:#f4f4f2; }
+.socials a:hover { border-color:#e31b23; background:#e31b23; color:#fff; }
+.socials svg { display:block; width:23px; height:23px; }
+html[data-theme='light'] .socials a { background:#fff; color:#171719; border-color:#aaaab0; }
+html[data-theme='light'] .socials a:hover { background:#e31b23; color:#fff; border-color:#e31b23; }
+html[data-theme='light'] .arena-hero,
+html[data-theme='light'] .arena-hero-frame { background-color:#f4f4f2; }
+html[data-theme='light'] .arena-hero-frame { border-color:#bbbcc2; background:linear-gradient(135deg,#fff 0 62%,#f5dadd 62%); }
+html[data-theme='light'] .arena-hero-slogan,.arena-hero-frame .msl-3d-wordmark { color:#171719; }
+html[data-theme='light'] .arena-home .hero-desc { color:#32333a; }
+html[data-theme='light'] .arena-text-link { color:#111113; }
+html[data-theme='light'] .arena-brand-art { mix-blend-mode:multiply; opacity:.26; }
+html[data-theme='light'] .arena-brand-art::after { background:linear-gradient(90deg,#fff,transparent 50%),linear-gradient(0deg,#fff,transparent 45%); }
+html[data-theme='light'] .arena-participants { background:#f5f5f4; color:#242429; }
+html[data-theme='light'] .arena-match-empty b { color:#171719; }
+html[data-theme='light'] .arena-scoreboard { color:#171719; }
+html[data-theme='light'] .arena-result-list em { color:#54545a; }
+html[data-theme='light'] .arena-join-grid em { color:#b90e18; }
+.league-page { max-width:1180px; }
+.league-kicker { color:#e31b23; font-weight:800; letter-spacing:.16em; font-size:12px; }
+.league-page h1 { text-transform:uppercase; font-size:clamp(32px,6vw,64px); }
+.league-lead { max-width:760px; font-size:18px; line-height:1.6; color:var(--text-2); }
+.league-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:32px 0; }
+.league-cards section,.league-process { border:1px solid var(--line); background:var(--panel); padding:24px; }
+.league-cards section { display:flex; flex-direction:column; min-width:0; }
+.league-cards span { color:#e31b23; font-size:12px; font-weight:800; }
+.league-cards h2,.league-process h2 { margin:20px 0 10px; font-size:24px; }
+.league-cards p { color:var(--text-2); flex:1; }
+.league-cards a,.league-process a { display:inline-flex; padding:12px 16px; border:1px solid #e31b23; color:#e31b23; font-weight:800; align-self:flex-start; }
+.league-contact { display:flex; flex-wrap:wrap; gap:8px; }
+.league-process ol { padding-left:22px; line-height:1.7; }
+.league-process li+li { margin-top:8px; }
+@media(max-width:680px) {
+  .header-in { gap:8px; padding-inline:12px; }
+  .header-in .brand { flex:1 1 auto; max-width:calc(100% - 110px); gap:6px; }
+  .header-in .brand-text { padding-left:8px; }
+  .header-in .brand-text b { font-size:10px; max-width:155px; }
+  .header-in .brand-text small { display:none; }
+  .header-in .theme-btn { margin-left:0; width:38px; height:38px; }
+  .header-in .burger { margin-left:0; flex:none; }
+  .arena-hero .wrap,.arena-primary { width:100%; max-width:100%; padding-inline:12px; }
+  .arena-hero-frame { width:100%; min-width:0; }
+  .arena-hero-copy { min-width:0; padding:34px 16px 96px; }
+  .msl-3d-wordmark { max-width:100%; font-size:clamp(34px,10.5vw,56px); }
+  .msl-3d-league { font-size:.53em; }
+  .arena-brand-art { right:0; left:40%; }
+  .arena-participants { max-width:100%; }
+  .arena-primary { min-width:0; }
+  .arena-tournament-rail { display:flex; width:calc(100% + 12px); max-width:calc(100% + 12px); overflow-x:auto; }
+  .arena-tournament-rail .tour-card { flex:0 0 min(82vw,340px); min-width:0; }
+  .arena-section-head { min-width:0; }
+  .arena-filters { width:100%; }
+  .arena-result-list>a { min-width:0; }
+  .footer { padding-top:0; }
+  .footer-top { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 12px; }
+  .footer-top a,.footer-settings { overflow-wrap:anywhere; font-size:14px; }
+  .footer-bottom { max-width:100%; }
+  .footer-bottom .brand { transform:none; max-width:100%; }
+  .footer-bottom .brand-text b { white-space:normal; }
+  .arena-bottom-nav a,.arena-bottom-nav button { font-size:10px; }
+  .league-cards { grid-template-columns:1fr; }
+  .league-cards section { padding:20px; }
+  .league-lead { font-size:16px; }
+}

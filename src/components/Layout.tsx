@@ -19,6 +19,7 @@ const nav = [
   ['/players', 'Игроки'],
   ['/rating', 'Рейтинг'],
   ['/orgs', 'Организации'],
+  ['/league', 'Лигам'],
   ['/news', 'Новости'],
   ['/rules', 'Регламент'],
   ['/faq', 'FAQ'],
@@ -202,7 +203,7 @@ export function Layout() {
             ) : (
               <Link to="/account">Войти</Link>
             ))}
-            <Link to="/admin">Организатору</Link>
+            <Link to="/league">Организатору</Link>
             <Link to="/register" className="btn btn-accent motion-magnetic">
               Подать заявку
             </Link>
@@ -286,6 +287,7 @@ export function Layout() {
           </div>
           <div>
             <h4>Организаторам</h4>
+            <Link to="/league">Как присоединиться</Link>
             <Link to="/admin">Панель организатора</Link>
             <Link to="/privacy">Конфиденциальность</Link>
             <Link to="/cookies">Использование cookies</Link>
@@ -294,6 +296,7 @@ export function Layout() {
           </div>
           <div>
             <h4>О лиге</h4>
+            <Link to="/league">Лигам и клубам</Link>
             <Link to="/faq">Вопросы и ответы</Link>
             <Link to="/rules">Документы лиги</Link>
           </div>
