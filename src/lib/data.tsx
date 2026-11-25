@@ -91,7 +91,7 @@ async function loadPublished(): Promise<{ db: DB; mode: Mode; rev: number; reado
   }
   const r = await fetch(`${import.meta.env.BASE_URL}data/db.json`, { cache: 'no-cache' })
   if (!r.ok) throw new Error(`HTTP ${r.status}`)
-  return { db: await r.json(), mode: 'static', rev: 0, readonly: false }
+  return { db: await r.json(), mode: 'static', rev: 0, readonly: !!config.apiBase }
 }
 
 export function DataProvider({ children }: { children: ReactNode }) {
@@ -116,7 +116,20 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     reload()
-  }, [])
+  }, [reload])
+
+  // A brief network interruption should not leave the app stuck on its boot screen.
+  useEffect(() => {
+    if (!error && !(config.apiBase && state?.mode === 'static')) return
+    const timer = window.setTimeout(() => { void reload() }, error ? 8_000 : 30_000)
+    return () => window.clearTimeout(timer)
+  }, [error, state?.mode, reload])
+
+  useEffect(() => {
+    const retry = () => { void reload() }
+    window.addEventListener('online', retry)
+    return () => window.removeEventListener('online', retry)
+  }, [reload])
 
   const value = useMemo<Ctx | null>(() => {
     if (!state) return null
@@ -134,8 +147,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, tick])
 
-  if (error && !value) return <div className="boot">Не удалось загрузить данные: {error}</div>
-  if (!value) return <div className="boot">Загрузка…</div>
+  if (error && !value) return <main className="boot"><div className="boot-error" role="alert">
+    <strong>Не удалось подключиться к сайту</strong>
+    <p>Проверьте соединение. Мы повторяем попытку автоматически.</p>
+    <button type="button" onClick={() => { void reload() }}>Попробовать снова</button>
+  </div></main>
+  if (!value) return <main className="boot">Загрузка…</main>
   return <DataCtx.Provider value={value}>{children}</DataCtx.Provider>
 }
 

@@ -10,7 +10,8 @@ for path in / /index.html /sw.js /manifest.webmanifest; do
   [[ "$cache_control" == *no-store* ]]
 done
 sw="$("${CURL[@]}" "$BASE/sw.js")"
-grep -q "cup-msl-v1-20261117" <<<"$sw"
+grep -q "cup-msl-v2-20261125" <<<"$sw"
+grep -q "'./data/db.json'" <<<"$sw"
 api="$("${CURL[@]}" "$BASE/api/?r=db")"
 grep -q '"teams"' <<<"$api"
 grep -q '"tournaments"' <<<"$api"

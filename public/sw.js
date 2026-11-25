@@ -1,12 +1,12 @@
 // Сервис-воркер Киберлиги: сайт ставится на телефон как приложение, а сетка, матчи и команды
 // открываются без сети в последней загруженной версии. Остальное API всегда идёт в сеть.
-const CACHE = 'cup-msl-v1-20261117'
+const CACHE = 'cup-msl-v2-20261125'
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches
       .open(CACHE)
-      .then((c) => c.addAll(['./', './manifest.webmanifest', './icon-192.png']))
+      .then((c) => c.addAll(['./', './manifest.webmanifest', './icon-192.png', './data/db.json']))
       .then(() => self.skipWaiting()),
   )
 })
