@@ -365,8 +365,8 @@ export function Players({ agents = false }: { agents?: boolean }) {
         </Link>
       </div>
       {agents && <p className="muted small">Игроки без команды. Отметиться можно в личном кабинете галочкой «Ищу команду».</p>}
-      <div className="panel">
-        <table className="table">
+      <div className="panel table-scroll players-table-wrap">
+        <table className="table players-table">
           <thead>
             <tr>
               <th className="left">Игрок</th>
