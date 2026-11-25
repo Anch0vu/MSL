@@ -316,22 +316,22 @@ export function Layout() {
             <div className="footer-sub">{config.siteSub}</div>
             <div className="socials">
               {vk && (
-                <a href={vk} target="_blank" rel="noreferrer" aria-label="VK">
-                  <svg viewBox="0 0 24 24"><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="800" fill="currentColor">VK</text></svg>
+                <a className="social-vk" href={vk} target="_blank" rel="noreferrer" aria-label="VK" title="VK">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.8 7.2c.2 4.9 2.6 8.1 6.7 8.4V13c1.5.2 2.6 1.1 3.2 2.6H17c-.2-1.9-1.6-3.3-2.3-3.8 0 0 3.4-1.8 3.8-4.6h-3.1c-.5 1.5-1.7 3.3-3.1 3.5V7.2H9.2v5.2c-1.4-.3-3.1-2.5-3.2-5.2H3.8z"/></svg>
                 </a>
               )}
               {tg && (
-                <a href={tg} target="_blank" rel="noreferrer" aria-label="Telegram">
+                <a className="social-telegram" href={tg} target="_blank" rel="noreferrer" aria-label="Telegram" title="Telegram">
                   <svg viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 11.4l13.2-5.1c.6-.2 1.1.1.9 1l-2.2 10.4c-.2.7-.6.9-1.200.6l-3.300-2.400-1.600 1.500c-.2.2-.3.3-.7.3l.2-3.400 6.100-5.500c.3-.2-.1-.4-.4-.2l-7.500 4.700-3.200-1c-.7-.2-.7-.7.1-.9z"/></svg>
                 </a>
               )}
               {tw && (
-                <a href={`https://twitch.tv/${tw}`} target="_blank" rel="noreferrer" aria-label="Twitch">
+                <a className="social-twitch" href={`https://twitch.tv/${tw}`} target="_blank" rel="noreferrer" aria-label="Twitch" title="Twitch">
                   <svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 3L3.500 7v12H8v3h3l3-3h4l4-4V3H5zm14 11l-2.500 2.500H12l-3 3v-3H6V5h13v9zM15 8h1.700v4.500H15V8zm-4 0h1.700v4.500H11V8z"/></svg>
                 </a>
               )}
               {dc && (
-                <a href={dc} target="_blank" rel="noreferrer" aria-label="Discord">
+                <a className="social-discord" href={dc} target="_blank" rel="noreferrer" aria-label="Discord" title="Discord">
                   <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.500A15 15 0 0015.300 5.400l-.4.800a13 13 0 00-3.900 0l-.4-.8A15 15 0 006.900 6.500C4.500 10 3.900 13.400 4.200 16.700a15 15 0 004.500 2.300l1-1.600a10 10 0 01-1.500-.7l.4-.3a10.700 10.700 0 009 0l.4.3c-.5.3-1 .5-1.500.7l1 1.600a15 15 0 004.500-2.300C21.300 12.800 20.200 9.400 19 6.500zM9.300 14.700c-.8 0-1.400-.7-1.400-1.600s.6-1.600 1.400-1.600 1.400.7 1.400 1.600-.6 1.600-1.400 1.600zm5.400 0c-.8 0-1.400-.7-1.400-1.600s.6-1.600 1.400-1.600 1.400.7 1.400 1.600-.6 1.600-1.400 1.600z"/></svg>
                 </a>
               )}
